@@ -15,7 +15,7 @@ def update(event, context):
         raise Exception("Couldn't update the todo item.")
         return
 
-    timestamp = int(time.time() * 1000)
+    timestamp = int(time.time() * 100)
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
