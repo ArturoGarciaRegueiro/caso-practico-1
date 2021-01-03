@@ -1,6 +1,6 @@
 org: argare
 app: todo-list-serverless
-service: serverless-rest-api-with-dynamodb
+service: serverless-rest-api-dynamodb
 
 frameworkVersion: ">2.0.0"
 
