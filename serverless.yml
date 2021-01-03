@@ -1,14 +1,17 @@
 org: argare
 app: todo-list-serverless
-service: serverless-rest-api-with-dynamodb
+service: serverless-rest-api-dynamodb
 
-frameworkVersion: ">2.0.0"
+frameworkVersion: ">1.0.0"
 
 provider:
   name: aws
   runtime: python3.8
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/ComprehendFullAccess"
+    - "arn:aws:iam::aws:policy/TranslateFullAccess"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -61,6 +64,13 @@ functions:
           method: delete
           cors: true
 
+  translate:
+    handler: todos/translate.translate
+    events:
+      - http:
+          path: todos/{id}/{language}
+          method: get
+          cors: true 
 resources:
   Resources:
     TodosDynamoDbTable:
@@ -78,4 +88,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.DYNAMODB_TABLE} 
